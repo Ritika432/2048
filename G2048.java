@@ -1,4 +1,4 @@
-package komalPractice;
+
 
 import java.util.Scanner;
 
