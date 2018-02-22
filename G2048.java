@@ -4,15 +4,17 @@ import java.util.Scanner;
 
 public class G2048 {
     
-   int[][] game(int board[][],int input,int height,int width)
+   public int[][] game(int board[][],string input,int height,int width)
     {
+public G2048()
+{
        int board_new[][] = board;
-       
+       }
     
         switch(input){
             
         
-     case 3:
+     case 'd':
          
          for(int i=0;i<height;i++)
          {
@@ -31,7 +33,7 @@ public class G2048 {
              }
          }
      break;
-     case 4:
+     case 'u':
          for(int i=0;i<height;i++)
          {
              for(int j=0;j<width-1;j++)
@@ -49,7 +51,7 @@ public class G2048 {
              }
          }
      break;
-         case 1:
+         case 'l':
         for (int i = 0; i < height - 1; i++) {
             for (int j= 0; j < width; j++ ){
 
@@ -66,7 +68,7 @@ public class G2048 {
             }
         }
 
-    case 2:
+    case 'r':
         for (int i = 1; i < height; i++) {
             for (int j = 0; j < width; j++) {
 
@@ -82,7 +84,26 @@ public class G2048 {
                 }
             }
         } 
+public final static void clearConsole()
+{
+    try
+    {
+        final String os = System.getProperty("os.name");
 
+        if (os.contains("Windows"))
+        {
+            Runtime.getRuntime().exec("cls");
+        }
+        else
+        {
+            Runtime.getRuntime().exec("clear");
+        }
+    }
+    catch (final Exception e)
+    {
+        
+    }
+}
      
      default:
          System.out.println("choose again");
@@ -100,18 +121,41 @@ public class G2048 {
         }
         return board_new;
     }
-   int[][] randomly(int[][] a)
-   { 
-       int i,j;
-       do{
-       i= (int)(Math.random()*4);
-       j=(int)(Math.random()*4);
-   }
-   while((a[i][j]!=0)||i<0||i>3||j<0||j>3);
-       int v= 2 +((int)(Math.random())*2);
-        a[i][j]=v;
-       return a;
-   }
+ 
+    public boolean generateNewTile(){
+
+        if (!(hasEmptyTile())){
+            return false;
+        }
+
+        Random random = new Random();
+
+        while (true){
+
+            int x = random.nextInt(SIZE);
+            int y = random.nextInt(SIZE);
+
+            if (board[x][y].getValue() == 0){
+
+                board[x][y].setValue(getNewTileValue());
+                return true;
+
+            }
+
+        }
+
+    }
+
+      
+    private int getNewTileValue(){
+
+        Random random = new Random();
+
+        int rng = random.nextInt(2) + 1;
+
+        return (rng * 2);
+
+    }
     public static void main(String[] args) {
     
        Scanner in = new Scanner(System.in);
@@ -132,8 +176,8 @@ public class G2048 {
         boolean cond=true;
          while(cond)
          {
-          System.out.println("choose your step...\n1: slide up\n2: slide down \n3: slide left \n4: slide right"
-                + "\n5: end your game");
+          System.out.println("choose your step...\nu: slide up\nd: slide down \nl: slide left \nr: slide right"
+                + "\nany other letter to end: end your game");
         int o = in.nextInt();
         if(o==5)
         {
@@ -142,7 +186,8 @@ public class G2048 {
         }
         else
         {
-        board =ob.randomly(board);
+        board =ob.generateNewTile();
+           board =ob.getNewTile();
         board= ob.game(board, o, 4, 4);
         }      
          }
