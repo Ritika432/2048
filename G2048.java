@@ -1,21 +1,31 @@
+package komalPractice;
 
-
+import java.util.Arrays;
 import java.util.Scanner;
-
 public class G2048 {
-    
-   public int[][] game(int board[][],string input,int height,int width)
-    {
-public G2048()
-{
-       int board_new[][] = board;
-       }
-    
-        switch(input){
-            
+     int board[][],height,width;
+     
+    G2048(int h,int w){
+       height=h;
+       width=w;
+        board=new int[h][w];
+        board=newTile(board);
+           for(int i=0;i<height;i++)
+        {
+            for(int j=0;j<width;j++)
+            { 
+               
+                System.out.print(board[i][j]+"\t");
+            }
+            System.out.println();
+        }
         
-     case 'd':
-         
+    }
+   public boolean game(String input)
+    { 
+        board=newTile(board);
+        switch(input){
+         case "l":
          for(int i=0;i<height;i++)
          {
              for(int j=1;j<width;j++)
@@ -24,8 +34,8 @@ public G2048()
                      continue;
                  if(board[i][j-1]==0||board[i][j-1]== board[i][j])
                  {
-                     board_new[i][j-1] =board[i][j-1] + board[i][j];
-                     board_new[i][j]=0;
+                     board[i][j-1] =board[i][j-1] + board[i][j];
+                     board[i][j]=0;
                      i=0;j=1;
                      
                              }
@@ -33,7 +43,7 @@ public G2048()
              }
          }
      break;
-     case 'u':
+     case "r":
          for(int i=0;i<height;i++)
          {
              for(int j=0;j<width-1;j++)
@@ -42,8 +52,8 @@ public G2048()
                      continue;
                  if(board[i][j+1]==0||board[i][j+1]== board[i][j])
                  {
-                     board_new[i][j+1] =board[i][j+1] + board[i][j];
-                     board_new[i][j]=0;
+                     board[i][j+1] =board[i][j+1] + board[i][j];
+                     board[i][j]=0;
                      i=0;j=0;
                      
                              }
@@ -51,7 +61,7 @@ public G2048()
              }
          }
      break;
-         case 'l':
+         case "d":
         for (int i = 0; i < height - 1; i++) {
             for (int j= 0; j < width; j++ ){
 
@@ -60,15 +70,15 @@ public G2048()
                 }
 
                 if (board[i + 1][j] == 0 || board[i + 1][j] == board[i][j]) {
-                    board_new[i + 1][j] = board[i + 1][j] + board[i][j];
-                    board_new[i][j] = 0;
+                    board[i + 1][j] = board[i + 1][j] + board[i][j];
+                    board[i][j] = 0;
                     i = 0;
                     j = 0;
                 }
             }
         }
 
-    case 'r':
+    case "u":
         for (int i = 1; i < height; i++) {
             for (int j = 0; j < width; j++) {
 
@@ -77,13 +87,146 @@ public G2048()
                 }
 
                 if (board[i - 1][j] == 0 || board[i - 1][j] == board[i][j]) {
-                    board_new[i - 1][j] = board[i - 1][j] + board[i][j];
-                    board_new[i][j] = 0;
+                    board[i - 1][j] = board[i - 1][j] + board[i][j];
+                    board[i][j] = 0;
                     i = 1;
                     j = 0;
                 }
             }
-        } 
+        }
+    break;
+          default:
+         System.out.println("choose again");
+                
+        }
+        G2048.clearConsole();
+        for(int i=0;i<height;i++)
+        {
+            for(int j=0;j<width;j++)
+            { 
+               
+                System.out.print(board[i][j]+"\t");
+            }
+            System.out.println();
+        }
+        boolean l,r,u,d;
+        l=check(board,"l");
+        r=check(board,"r");
+        u=check(board,"u");
+        d=check(board,"d");
+        if(reached(board,height,width))System.out.println("Congo!!!! U reached 2048");
+        if(l&&r&&u&&d)return true;
+        else return false;
+    }
+   
+   boolean reached(int b[][],int h,int w)
+   {
+       int k=0;
+       int a[]=new int[h*w];
+       for(int i=0;i<h;i++)
+        {
+            for(int j=0;j<w;j++)
+            { 
+               
+                a[k]=board[i][j];
+                k++;
+            }
+        }
+       Arrays.sort(a);
+       
+       if(a[k-1]==2048)
+           return true;
+       else
+           return false;
+       
+   }
+   public boolean check(int[][] board,String input)
+   {
+       
+       int boardc[][]=board;
+        board=newTile(board);
+        switch(input){
+         case "l":
+         for(int i=0;i<height;i++)
+         {
+             for(int j=1;j<width;j++)
+             {
+                 if(board[i][j]==0)
+                     continue;
+                 if(board[i][j-1]==0||board[i][j-1]== board[i][j])
+                 {
+                     board[i][j-1] =board[i][j-1] + board[i][j];
+                     board[i][j]=0;
+                     i=0;j=1;
+                     
+                             }
+                 
+             }
+         }
+     break;
+     case "r":
+         for(int i=0;i<height;i++)
+         {
+             for(int j=0;j<width-1;j++)
+             {
+                 if(board[i][j]==0)
+                     continue;
+                 if(board[i][j+1]==0||board[i][j+1]== board[i][j])
+                 {
+                     board[i][j+1] =board[i][j+1] + board[i][j];
+                     board[i][j]=0;
+                     i=0;j=0;
+                     
+                             }
+                 
+             }
+         }
+     break;
+         case "d":
+        for (int i = 0; i < height - 1; i++) {
+            for (int j= 0; j < width; j++ ){
+
+                if (board[i][j] == 0) {
+                    continue;
+                }
+
+                if (board[i + 1][j] == 0 || board[i + 1][j] == board[i][j]) {
+                    board[i + 1][j] = board[i + 1][j] + board[i][j];
+                    board[i][j] = 0;
+                    i = 0;
+                    j = 0;
+                }
+            }
+        }
+
+    case "u":
+        for (int i = 1; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+
+                if (board[i][j] == 0 ){
+                    continue;
+                }
+
+                if (board[i - 1][j] == 0 || board[i - 1][j] == board[i][j]) {
+                    board[i - 1][j] = board[i - 1][j] + board[i][j];
+                    board[i][j] = 0;
+                    i = 1;
+                    j = 0;
+                }
+            }
+        }
+    break;
+          default:
+         System.out.println("choose again");
+                
+        }
+        if(board.equals(boardc))
+            return false;
+                    else
+            return true;
+   }
+   
+    
 public final static void clearConsole()
 {
     try
@@ -104,97 +247,56 @@ public final static void clearConsole()
         
     }
 }
-     
-     default:
-         System.out.println("choose again");
-                
-        }
-        
-        for(int i=0;i<4;i++)
-        {
-            for(int j=0;j<4;j++)
-            { 
-               
-                System.out.print(board_new[i][j]+"\t");
-            }
-            System.out.println();
-        }
-        return board_new;
+public int[][] newTile(int a[][])
+{
+    
+   int i,j;
+       do{
+        i= (int)(Math.random()*4);
+        j=(int)(Math.random()*4);
     }
+    while((a[i][j]!=0)||i<0||i>3||j<0||j>3);
+        int v= 2 +((int)(Math.random())*2);
+         a[i][j]=v;
+        return a; 
+    
+}
+
+
+   
  
-    public boolean generateNewTile(){
+  
 
-        if (!(hasEmptyTile())){
-            return false;
-        }
-
-        Random random = new Random();
-
-        while (true){
-
-            int x = random.nextInt(SIZE);
-            int y = random.nextInt(SIZE);
-
-            if (board[x][y].getValue() == 0){
-
-                board[x][y].setValue(getNewTileValue());
-                return true;
-
-            }
-
-        }
-
-    }
-
-      
-    private int getNewTileValue(){
-
-        Random random = new Random();
-
-        int rng = random.nextInt(2) + 1;
-
-        return (rng * 2);
-
-    }
     public static void main(String[] args) {
     
        Scanner in = new Scanner(System.in);
         System.out.println("Welcome to 2048....\n it will be a game in 4x4 board");
         System.out.println("and the game starts...choose your moves wisely....");
-        int board[][]= new int [4][4];
-        G2048 ob = new G2048();
-        board =ob.randomly(board);
-         for(int i=0;i<4;i++)
-        {
-            for(int j=0;j<4;j++)
-            { 
-               
-                System.out.print(board[i][j]+"\t");
-            }
-            System.out.println();
-        }
-        boolean cond=true;
+        G2048 ob = new G2048(4,4);
+        boolean cond=true,cont;
          while(cond)
          {
           System.out.println("choose your step...\nu: slide up\nd: slide down \nl: slide left \nr: slide right"
-                + "\nany other letter to end: end your game");
-        int o = in.nextInt();
-        if(o==5)
+                + "\ne: end your game");
+        String o = in.next();
+        if(o=="e")
         {
             System.out.println(" good bye....");
             cond=false;
         }
         else
         {
-        board =ob.generateNewTile();
-           board =ob.getNewTile();
-        board= ob.game(board, o, 4, 4);
-        }      
+        cont= ob.game(o); 
+//        if(!cont)
+//        {
+//            System.out.println("No more moves....\n Game over!!");
+//            cond=false;
+//        }
+        }
          }
          
         
         
     
     }
-    
-}
+  }
